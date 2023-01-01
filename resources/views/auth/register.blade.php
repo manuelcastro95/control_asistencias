@@ -1,7 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.auth')
+
+@section('titulo')
+    Registrarse
+@endsection
 
 @section('menu_select')
-    {{$select = ''}}
+    {{$select = 'register'}}
 @endsection
 
 @section('content')

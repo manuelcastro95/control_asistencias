@@ -38,14 +38,16 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav me-auto">
-                        @if($select != '')
-                            <li class="nav-item">
-                                <a class="nav-link  {{$select != 'alumnos' ?:'active'}}" href="{{ route('alumnos.index') }}"><i class="fas fa-users"></i> Alumnos</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link  {{$select != 'asistencias' ?:'active'}}" href="{{ route('asistencias.index') }}"><i class="fas fa-file-signature"></i> Asistencias</a>
-                            </li>
-                            @yield('menu')
+                        @if(auth()->user())
+                            @if($select != '')
+                                <li class="nav-item">
+                                    <a class="nav-link  {{$select != 'alumnos' ?:'active'}}" href="{{ route('alumnos.index') }}"><i class="fas fa-users"></i> Alumnos</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link  {{$select != 'asistencias' ?:'active'}}" href="{{ route('asistencias.index') }}"><i class="fas fa-file-signature"></i> Asistencias</a>
+                                </li>
+                                @yield('menu')
+                            @endif
                         @endif
                     </ul>
 
@@ -55,14 +57,14 @@
                         @guest
                             @if (Route::has('login'))
                                 <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    <a class="nav-link {{$select != 'login' ?:'active'}}" href="{{ route('login') }}">{{ __('Login') }}</a>
                                 </li>
                             @endif
 
                             @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
+                                {{-- <li class="nav-item">
+                                    <a class="nav-link {{$select != 'register' ?:'active'}}" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                </li> --}}
                             @endif
                         @else
                             <li class="nav-item dropdown">

@@ -1,10 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
-@section('menu_select')
-    {{$select = ''}}
+@section('titulo')
+    Recuperar Contraseña
 @endsection
 
-@section('content')
+@section('menu_select')
+    {{$select = 'reset'}}
+@endsection
+
+@section('contenido')
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-8">
@@ -22,7 +26,7 @@
                         @csrf
 
                         <div class="row mb-3">
-                            <label for="email" class="col-md-4 col-form-label text-md-end">{{ __('Email Address') }}</label>
+                            <label for="email" class="col-md-4 col-form-label text-md-end">Correo Electronico</label>
 
                             <div class="col-md-6">
                                 <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
