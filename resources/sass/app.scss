@@ -1,8 +1,497 @@
 // Fonts
 @import url('https://fonts.bunny.net/css?family=Nunito');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 // Variables
 @import 'variables';
 
 // Bootstrap
 @import 'bootstrap/scss/bootstrap';
+
+// Custom Styles
+body {
+    font-family: 'Inter', 'Nunito', sans-serif;
+    background-color: #f8f9fc;
+}
+
+main {
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.navbar-brand {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.nav-link {
+    font-weight: 500;
+    transition: all 0.3s ease;
+    border-radius: 0.375rem;
+    margin: 0 0.25rem;
+    
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        transform: translateY(-1px);
+    }
+    
+    &.active {
+        background-color: rgba(255, 255, 255, 0.2);
+        font-weight: 600;
+    }
+}
+
+.card {
+    border: none;
+    border-radius: 0.75rem;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
+    transition: all 0.3s ease;
+    
+    &:hover {
+        box-shadow: 0 0.25rem 2rem 0 rgba(58, 59, 69, 0.25);
+        transform: translateY(-2px);
+    }
+}
+
+.card-header {
+    background-color: #f8f9fc;
+    border-bottom: 1px solid #e3e6f0;
+    font-weight: 600;
+    padding: 1.25rem 1.75rem;
+}
+
+.card-body {
+    padding: 1.5rem 1.75rem;
+}
+
+.btn {
+    border-radius: 0.5rem;
+    font-weight: 500;
+    padding: 0.5rem 1.25rem;
+    transition: all 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.1);
+    }
+}
+
+// Estilos mejorados para tablas
+.table {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    margin-bottom: 0;
+    background-color: #fff;
+    
+    thead {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: #fff;
+        
+        th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.3px;
+            padding: 0.6rem 0.75rem;
+            border: none;
+            vertical-align: middle;
+            white-space: nowrap;
+            
+            &:first-child {
+                border-top-left-radius: 0.5rem;
+            }
+            
+            &:last-child {
+                border-top-right-radius: 0.5rem;
+            }
+        }
+    }
+    
+    tbody {
+        tr {
+            transition: background-color 0.15s ease;
+            border-bottom: 1px solid #e9ecef;
+            
+            &:hover {
+                background-color: #f8f9fa;
+            }
+            
+            &:last-child {
+                border-bottom: none;
+            }
+            
+            td {
+                padding: 0.6rem 0.75rem;
+                vertical-align: middle;
+                border-top: none;
+                color: #495057;
+                font-size: 0.875rem;
+            }
+        }
+    }
+    
+    // Badges mejorados en tablas
+    .badge {
+        padding: 0.3rem 0.5rem;
+        font-weight: 500;
+        font-size: 0.7rem;
+        border-radius: 0.3rem;
+        letter-spacing: 0.2px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        
+        &.bg-success {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+        }
+        
+        &.bg-danger {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+        }
+        
+        &.bg-warning {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+        }
+        
+        &.bg-info {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%) !important;
+        }
+        
+        &.bg-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+        }
+        
+        &.bg-secondary {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%) !important;
+        }
+    }
+    
+    // Botones en tablas
+    .btn-group {
+        .btn {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.875rem;
+            border-radius: 0.375rem;
+            transition: all 0.3s ease;
+            
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+            }
+            
+            &.btn-warning {
+                background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+                border: none;
+                color: #fff;
+                
+                &:hover {
+                    background: linear-gradient(135deg, #d97706 0%, #b45309 100%);
+                }
+            }
+            
+            &.btn-danger {
+                background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+                border: none;
+                
+                &:hover {
+                    background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+                }
+            }
+        }
+    }
+}
+
+// DataTables personalizado
+.dataTables_wrapper {
+    .dataTables_length,
+    .dataTables_filter {
+        margin-bottom: 0.75rem;
+        font-size: 0.875rem;
+        
+        label {
+            font-weight: 500;
+            color: #495057;
+            font-size: 0.875rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        input, select {
+            border-radius: 0.375rem;
+            border: 1px solid #ced4da;
+            padding: 0.375rem 0.5rem;
+            font-size: 0.875rem;
+            transition: all 0.2s ease;
+            
+            &:focus {
+                border-color: #667eea;
+                box-shadow: 0 0 0 0.15rem rgba(102, 126, 234, 0.15);
+                outline: none;
+            }
+        }
+    }
+    
+    .dataTables_info {
+        color: #6c757d;
+        font-weight: 500;
+        font-size: 0.875rem;
+        padding-top: 0.75rem;
+    }
+    
+    .dataTables_paginate {
+        padding-top: 0.75rem;
+        font-size: 0.75rem;
+        
+        .paginate_button {
+            padding: 0.15rem 0.35rem;
+            margin: 0 0.08rem;
+            border-radius: 0.2rem;
+            border: 1px solid #dee2e6;
+            background-color: #fff;
+            color: #495057 !important;
+            font-size: 0.75rem;
+            min-width: 24px;
+            height: 24px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+            cursor: pointer;
+            line-height: 1;
+            
+            &:hover:not(.disabled):not(.current) {
+                background-color: #f8f9fa;
+                border-color: #667eea;
+                color: #667eea !important;
+            }
+            
+            &.current {
+                background-color: #667eea;
+                color: #fff !important;
+                border-color: #667eea;
+                font-weight: 600;
+            }
+            
+            &.disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+                background-color: #f8f9fa;
+                color: #adb5bd !important;
+                
+                &:hover {
+                    background-color: #f8f9fa;
+                    border-color: #dee2e6;
+                    color: #adb5bd !important;
+                }
+            }
+            
+            &.ellipsis {
+                border: none;
+                background: transparent;
+                cursor: default;
+                color: #6c757d !important;
+                min-width: auto;
+                padding: 0.15rem 0.2rem;
+                
+                &:hover {
+                    background: transparent;
+                    color: #6c757d !important;
+                }
+            }
+        }
+    }
+    
+    // Botones de exportación
+    .dt-buttons {
+        margin-bottom: 0.75rem;
+        
+        .btn {
+            margin-right: 0.25rem;
+            border-radius: 0.3rem;
+            font-weight: 500;
+            padding: 0.3rem 0.6rem;
+            font-size: 0.8rem;
+            transition: all 0.2s ease;
+            
+            &:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+        }
+    }
+}
+
+// Tabla responsive mejorada
+.table-responsive {
+    border-radius: 0.5rem;
+    
+    &::-webkit-scrollbar {
+        height: 6px;
+        width: 6px;
+    }
+    
+    &::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border-radius: 10px;
+        
+        &:hover {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+        }
+    }
+    
+    // Header fijo cuando hay scroll
+    thead {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+    }
+}
+
+// Tabla con rayas alternadas
+.table-striped > tbody > tr:nth-of-type(odd) > td {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.form-control, .form-select {
+    border-radius: 0.5rem;
+    border: 1px solid #d1d3e2;
+    transition: all 0.3s ease;
+    
+    &:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+}
+
+.modal-content {
+    border-radius: 0.75rem;
+    border: none;
+    box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.15);
+}
+
+.modal-header {
+    border-bottom: 1px solid #e3e6f0;
+    background-color: #f8f9fc;
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+// Animaciones
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.card {
+    animation: fadeIn 0.5s ease-out;
+}
+
+// Espaciado adicional para mejor legibilidad
+.container-fluid {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+    // Tabla compacta
+.table-sm {
+    font-size: 0.875rem;
+    
+    thead th {
+        padding: 0.6rem 0.75rem;
+        font-size: 0.75rem;
+    }
+    
+    tbody td {
+        padding: 0.6rem 0.75rem;
+        font-size: 0.875rem;
+    }
+}
+
+// Mejoras adicionales para tablas
+.table {
+    margin-bottom: 0.75rem;
+    
+    // Badges más pequeños en tablas
+    .badge {
+        font-size: 0.7rem;
+        padding: 0.25rem 0.45rem;
+        font-weight: 500;
+    }
+    
+    // Botones en tablas más pequeños
+    .btn-group {
+        .btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.8rem;
+            border-radius: 0.3rem;
+            
+            &:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+        }
+    }
+}
+
+// Formularios compactos
+.form-control-sm, .form-select-sm {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+}
+
+// Cards compactas
+.card-header {
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+// Botones compactos
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+// Responsive improvements
+@media (max-width: 768px) {
+    .container-fluid {
+        padding-left: 1rem;
+        padding-right: 1rem;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+    
+    .card {
+        margin-bottom: 1rem;
+    }
+    
+    .card-body {
+        padding: 0.75rem;
+    }
+    
+    .card-header {
+        padding: 0.5rem 0.75rem;
+    }
+    
+    .table-sm {
+        font-size: 0.8rem;
+        
+        th, td {
+            padding: 0.375rem 0.5rem;
+        }
+    }
+}

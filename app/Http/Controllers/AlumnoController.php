@@ -3,94 +3,186 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\ConfigHelper;
+use App\Http\Requests\StoreAlumnoRequest;
+use App\Http\Requests\UpdateAlumnoRequest;
+use App\Http\Requests\SaveAsistenciaRequest;
+use App\Exports\PlantillaAlumnosExport;
+use App\Imports\AlumnosImport;
 use App\Models\Alumno;
-use App\Models\Asistencia;
-use Carbon\Carbon;
-use Illuminate\Contracts\Session\Session;
+use App\Models\Grado;
+use App\Services\AlumnoService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
 
 class AlumnoController extends Controller
 {
-    
-    public function index()
+    protected $alumnoService;
+
+    public function __construct(AlumnoService $alumnoService)
     {
-        $alumnos = Alumno::all();
-        return view('alumnos.index',compact('alumnos'));
-    }
-
-    public function store(Request $request)
-    {
-        $alumno = new Alumno();
-        $alumno->codigo = $request->codigo;
-        $alumno->nombres = $request->nombres;
-        $alumno->apellidos = $request->apellidos;
-        $alumno->save();
-        $alumno->qr = $alumno->qr_base;
-        $alumno->save();
-
-        $alumnos = Alumno::all();
-
-        return response()->json(['alumnos' => $alumnos, 'res' => 'ok']);
-
-        // flash('Registro Guardado','success');
-        // return back();
+        $this->alumnoService = $alumnoService;
     }
     
-    public function show(Alumno $alumno)
+    public function index(Request $request)
     {
-        return $alumno;
+        $query = Alumno::with('grado.sede.institucion');
+        
+        // Filtros
+        if ($request->has('grado_id') && $request->grado_id) {
+            $query->where('grado_id', $request->grado_id);
+        }
+        
+        if ($request->has('activo') && $request->activo !== '') {
+            $query->where('activo', $request->activo);
+        }
+        
+        if ($request->has('buscar') && $request->buscar) {
+            $buscar = $request->buscar;
+            $query->where(function($q) use ($buscar) {
+                $q->where('codigo', 'like', "%{$buscar}%")
+                  ->orWhere('nombres', 'like', "%{$buscar}%")
+                  ->orWhere('apellidos', 'like', "%{$buscar}%")
+                  ->orWhere('documento_identidad', 'like', "%{$buscar}%");
+            });
+        }
+        
+        $alumnos = $query->orderBy('created_at', 'desc')->get();
+        $grados = Grado::with('sede.institucion')->where('activo', true)->orderBy('orden')->get();
+        
+        return view('alumnos.index', compact('alumnos', 'grados'));
     }
 
-    public function save_record(Request $request){
-        $alumno = Alumno::where('codigo',$request->codigo)->first();
-        $hoy = Carbon::now()->format('Y-m-d');
+    /**
+     * Importar alumnos desde Excel
+     */
+    public function importar(Request $request): JsonResponse
+    {
+        $request->validate([
+            'archivo' => 'required|mimes:xlsx,xls,csv|max:10240'
+        ]);
 
-        if(!is_null($alumno)):
-            $validar = Asistencia::where('alumno_id',$alumno->id)->where('fecha', $hoy)->get();
-
-            if($validar->count() > 0):
-                $res = ['msg' => 'Ya registro asistencia', 'level' => 'warning'];
-            else:
-                $asistencia =  new Asistencia();
-                $asistencia->alumno_id = $alumno->id;
-                $asistencia->fecha = $hoy;
-                $asistencia->save();
-
-                $res = ['msg' => 'Asistencia registrada', 'level' => 'success'];;
-            endif;
-        else:
-            $res = ['msg' => 'No se encontro el alumno', 'level' => 'error'];;
-        endif;
-
-        return response()->json($res);
+        try {
+            $import = new AlumnosImport($this->alumnoService);
+            Excel::import($import, $request->file('archivo'));
+            
+            $resultados = $import->getResults();
+            
+            return response()->json([
+                'res' => 'ok',
+                'message' => "Importación completada: {$resultados['importados']} importados, {$resultados['fallidos']} fallidos",
+                'importados' => $resultados['importados'],
+                'fallidos' => $resultados['fallidos'],
+                'errors' => $resultados['errors']
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'res' => 'error',
+                'message' => 'Error al importar: ' . $e->getMessage()
+            ], 500);
+        }
     }
 
-   
-    public function edit(Alumno $alumno)
+    /**
+     * Descargar plantilla Excel
+     */
+    public function descargarPlantilla()
     {
-        //
+        return Excel::download(
+            new PlantillaAlumnosExport(),
+            'plantilla_importacion_alumnos.xlsx'
+        );
     }
 
-  
-    public function update(Request $request, Alumno $alumno)
+    public function store(StoreAlumnoRequest $request): JsonResponse
     {
-        $alumno->codigo = $request->codigo;
-        $alumno->nombres = $request->nombres;
-        $alumno->apellidos = $request->apellidos;
-        $alumno->save();
-        $alumno->qr = $alumno->qr_base;
-        $alumno->save();
+        try {
+            $alumno = $this->alumnoService->create($request->validated());
+            $alumnos = Alumno::orderBy('created_at', 'desc')->get();
 
-        $alumnos = Alumno::all();
-        return response()->json(['alumnos' => $alumnos, 'res' => 'ok']);
+            return response()->json([
+                'alumnos' => $alumnos,
+                'res' => 'ok',
+                'message' => 'Alumno registrado correctamente'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'res' => 'error',
+                'message' => 'Error al registrar el alumno: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+    
+    public function show(Alumno $alumno): JsonResponse
+    {
+        $alumno->load('grado.sede.institucion');
+        
+        return response()->json([
+            'id' => $alumno->id,
+            'codigo' => $alumno->codigo,
+            'nombres' => $alumno->nombres,
+            'apellidos' => $alumno->apellidos,
+            'grado_id' => $alumno->grado_id,
+            'grado' => $alumno->grado ? $alumno->grado->nombre : null,
+            'email' => $alumno->email,
+            'telefono' => $alumno->telefono,
+            'fecha_nacimiento' => $alumno->fecha_nacimiento,
+            'genero' => $alumno->genero,
+            'documento_identidad' => $alumno->documento_identidad,
+            'direccion' => $alumno->direccion,
+            'nombre_acudiente' => $alumno->nombre_acudiente,
+            'telefono_acudiente' => $alumno->telefono_acudiente,
+            'observaciones' => $alumno->observaciones,
+            'qr' => $alumno->qr_base
+        ]);
     }
 
-    public function destroy(Alumno $alumno)
+    public function save_record(SaveAsistenciaRequest $request): JsonResponse
     {
-       $alumno->delete();
+        $result = $this->alumnoService->registrarAsistencia($request->validated()['codigo']);
+        
+        return response()->json([
+            'msg' => $result['msg'],
+            'level' => $result['level'],
+            'success' => $result['success']
+        ]);
+    }
 
-       $alumnos = Alumno::all();
-       return response()->json(['alumnos' => $alumnos, 'res' => 'ok']);
+    public function update(UpdateAlumnoRequest $request, Alumno $alumno): JsonResponse
+    {
+        try {
+            $this->alumnoService->update($alumno, $request->validated());
+            $alumnos = Alumno::orderBy('created_at', 'desc')->get();
+
+            return response()->json([
+                'alumnos' => $alumnos,
+                'res' => 'ok',
+                'message' => 'Alumno actualizado correctamente'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'res' => 'error',
+                'message' => 'Error al actualizar el alumno: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function destroy(Alumno $alumno): JsonResponse
+    {
+        try {
+            $this->alumnoService->delete($alumno);
+            $alumnos = Alumno::orderBy('created_at', 'desc')->get();
+
+            return response()->json([
+                'alumnos' => $alumnos,
+                'res' => 'ok',
+                'message' => 'Alumno eliminado correctamente'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'res' => 'error',
+                'message' => 'Error al eliminar el alumno: ' . $e->getMessage()
+            ], 500);
+        }
     }
 }

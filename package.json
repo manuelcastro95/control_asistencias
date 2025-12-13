@@ -8,6 +8,7 @@
         "@popperjs/core": "^2.10.2",
         "axios": "^1.1.2",
         "bootstrap": "^5.2.1",
+        "chart.js": "^4.4.0",
         "laravel-vite-plugin": "^0.6.0",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",

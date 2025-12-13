@@ -16,17 +16,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
-
-        // \App\Models\User::factory()->create([
-        //     'name' => 'Test User',
-        //     'email' => 'test@example.com',
-        // ]);
-
+        // Crear usuario administrador
         DB::table('users')->insert([
     		'name' => 'Administrador',
     		'email' => 'admin@admin.com',
     		'password' => Hash::make('control1234')
     	]);
+
+        // Ejecutar seeder de instituciones (esto crea todo: instituciones, sedes, grados, alumnos y asistencias)
+        $this->call([
+            InstitucionSeeder::class,
+        ]);
     }
 }

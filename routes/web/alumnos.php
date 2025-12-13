@@ -11,5 +11,9 @@ Route::group(['middleware' => ['web','auth'], 'prefix' => 'alumnos/'], function 
     Route::delete('{alumno}/destroy', [AlumnoController::class, 'destroy'])->name('alumnos.destroy');
 
     Route::post('save-record', [AlumnoController::class, 'save_record'])->name('save.record');
+    
+    // Importación
+    Route::post('importar', [AlumnoController::class, 'importar'])->name('alumnos.importar');
+    Route::get('plantilla', [AlumnoController::class, 'descargarPlantilla'])->name('alumnos.plantilla');
 });
 
