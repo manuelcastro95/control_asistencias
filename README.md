@@ -18,6 +18,7 @@
 <p align="center">
   <a href="#about-project">About</a> &#xa0; | &#xa0; 
   <a href="#features">Features</a> &#xa0; | &#xa0;
+  <a href="#screenshots">Screenshots</a> &#xa0; | &#xa0;
   <a href="#technologies">Technologies</a> &#xa0; | &#xa0;
   <a href="#requirements">Requirements</a> &#xa0; | &#xa0;
   <a href="#starting">Starting</a> &#xa0; | &#xa0;
@@ -42,6 +43,32 @@ Sistema completo de control de asistencias estudiantiles mediante códigos QR. P
 - ✅ **Importación Masiva**: Carga de alumnos desde archivos Excel
 - ✅ **Interfaz Moderna**: Diseño responsive con Bootstrap 5
 - ✅ **Optimización**: Paginación server-side y consultas optimizadas
+
+## 📸 Screenshots
+
+<div align="center">
+  <h3>Login</h3>
+  <img src="docs/screenshots/control-asitencias-login.png" alt="Dashboard" width="800"/>
+
+  <h3>Dashboard Principal</h3>
+  <img src="docs/screenshots/control-asitencias-dasboard.png" alt="Dashboard" width="800"/>
+  
+  <h3>Gestión de Alumnos</h3>
+  <img src="docs/screenshots/control-asitencias-alumnos.png" alt="Alumnos" width="800"/>
+
+  <h3>Gestión de Alumnos Detalle</h3>
+  <img src="docs/screenshots/control-asitencias-alumnos-detalle.png" alt="Alumnos" width="800"/>
+  
+  <h3>Control de Asistencias</h3>
+  <img src="docs/screenshots/control-asitencias-alumnos-ingresos.png" alt="Asistencias" width="800"/>
+  
+  <h3>Vista APP</h3>
+  <img src="docs/screenshots/control-asitencias-alumnos-app.PNG" alt="Alumnos Filtros" width="800"/>
+
+  
+</div>
+
+> 💡 **Nota**: Puedes agregar más capturas en la carpeta `docs/screenshots/` y referenciarlas aquí.
 
 ## 🚀 Features
 

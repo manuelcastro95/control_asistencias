@@ -17,3 +17,7 @@ yarn-error.log
 /.idea
 /.vscode
 readme/
+
+# Screenshots - Mantener las capturas en docs/screenshots/
+# No ignorar: docs/screenshots/*.png
+# No ignorar: docs/screenshots/*.jpg
